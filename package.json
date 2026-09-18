@@ -12,7 +12,8 @@
     "assets": "node scripts/build-brand-assets.mjs",
     "format": "prettier --write .",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build",
-    "seed:build": "esbuild src/lib/content/defaults.ts --bundle --format=esm --platform=node --alias:@=./src --outfile=.seed-cache/defaults.mjs && node scripts/build-seed.mjs"
+    "seed:build": "esbuild src/lib/content/defaults.ts --bundle --format=esm --platform=node --alias:@=./src --outfile=.seed-cache/defaults.mjs && node scripts/build-seed.mjs",
+    "seed:articles": "node scripts/seed-articles.mjs"
   },
   "dependencies": {
     "@portabletext/react": "^8.0.1",
