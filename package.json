@@ -1,0 +1,48 @@
+{
+  "name": "escontabilidade",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "assets": "node scripts/build-brand-assets.mjs",
+    "format": "prettier --write .",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "seed:build": "esbuild src/lib/content/defaults.ts --bundle --format=esm --platform=node --alias:@=./src --outfile=.seed-cache/defaults.mjs && node scripts/build-seed.mjs"
+  },
+  "dependencies": {
+    "@portabletext/react": "^8.0.1",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.15.0",
+    "motion": "^13.4.0",
+    "next": "16.3.5",
+    "next-sanity": "^13.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sanity": "^6.15.0",
+    "styled-components": "^6.5.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "prettier": "^3.9.8",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
