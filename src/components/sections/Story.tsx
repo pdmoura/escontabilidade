@@ -133,17 +133,17 @@ function ProgressRail({ progress, steps }: { progress: MotionValue<number>; step
 
 function StoryBackdrop({ progress }: { progress: MotionValue<number> }) {
   const x = useTransform(progress, [0, 1], ["6%", "-6%"]);
-  const opacity = useTransform(progress, [0, 0.15, 0.85, 1], [0.35, 0.6, 0.6, 0.85]);
+  const opacity = useTransform(progress, [0, 0.15, 0.85, 1], [0.5, 0.75, 0.75, 0.95]);
   return (
     <m.div aria-hidden="true" style={{ x, opacity }} className="pointer-events-none absolute inset-0">
       <Image
-        src="/generated/editorial-pulse.webp"
+        src="/generated/editorial-sheets.webp"
         alt=""
         fill
         sizes="100vw"
-        className="object-cover object-center opacity-90 mix-blend-screen"
+        className="object-cover object-[70%_center]"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-coffee-900 via-coffee-900/70 to-coffee-900/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-coffee-900 via-coffee-900/75 to-coffee-900/10" />
     </m.div>
   );
 }

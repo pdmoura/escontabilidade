@@ -7,8 +7,8 @@ export function Audience({ audiences }: { audiences: string[] }) {
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
         <Reveal as="figure" className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-coffee-900 lg:col-span-5 lg:aspect-auto lg:min-h-[640px]">
           <Image
-            src="/generated/editorial-pulse.webp"
-            alt="Composição abstrata em creme, café e dourado com linhas em ritmo de pulso, representando organização e cuidado"
+            src="/generated/editorial-ledger.webp"
+            alt="Folhas de papel creme sobrepostas com uma linha dourada em ritmo de pulso que se transforma em uma grade de registros"
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-cover"
