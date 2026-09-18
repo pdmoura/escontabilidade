@@ -100,6 +100,8 @@ export interface Article extends ArticleSummary {
   generatedByAI: boolean;
   reviewedByHuman: boolean;
   origin: "manual" | "ai";
+  /** 1200x630 JPEG for link previews, when a cover exists. */
+  ogImage?: string;
 }
 
 export interface ExtendedSettings extends SiteSettings {

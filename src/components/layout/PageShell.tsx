@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { BackToTop } from "@/components/layout/BackToTop";
 import { StickyWhatsApp } from "@/components/layout/StickyWhatsApp";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { getProfessional, getSettings } from "@/lib/content/get";
@@ -16,6 +17,7 @@ export async function PageShell({ children, withCta = true }: { children: ReactN
       </main>
       <Footer settings={settings} />
       <StickyWhatsApp whatsapp={settings.whatsapp} />
+      <BackToTop />
     </>
   );
 }

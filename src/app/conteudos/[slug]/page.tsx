@@ -10,7 +10,8 @@ import { PortableBody } from "@/components/ui/PortableBody";
 import { WhatsAppIcon, WhatsAppLink } from "@/components/ui/WhatsAppLink";
 import { getArticleBySlug, getArticleSlugs, getProfessional, getRelatedArticles, getSettings } from "@/lib/content/get";
 import { formatDate } from "@/lib/format";
-import { articleJsonLd, breadcrumbJsonLd, graph } from "@/lib/seo";
+import { OG_ALT } from "@/lib/og/render";
+import { absoluteUrl, articleJsonLd, breadcrumbJsonLd, graph } from "@/lib/seo";
 import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
 export const revalidate = 300;
@@ -42,9 +43,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
       authors: [article.authorName],
-      images: article.coverImage ? [{ url: article.coverImage.src, width: article.coverImage.width, height: article.coverImage.height, alt: article.coverImage.alt }] : undefined,
+      images: [{ url: article.ogImage ?? absoluteUrl("/og-image.jpg"), width: 1200, height: 630, type: "image/jpeg", alt: article.coverImage?.alt ?? OG_ALT }],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [article.ogImage ?? absoluteUrl("/og-image.jpg")] },
   };
 }
 
