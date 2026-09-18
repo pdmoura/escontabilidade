@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { BackToTop } from "@/components/layout/BackToTop";
 import { StickyWhatsApp } from "@/components/layout/StickyWhatsApp";
 import { About } from "@/components/sections/About";
 import { ArticlesTeaser } from "@/components/sections/ArticlesTeaser";
@@ -18,6 +19,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { audiences } from "@/lib/content/defaults";
 import { getHomeContent, getSettings } from "@/lib/content/get";
+import { OG_ALT } from "@/lib/og/render";
 import { faqJsonLd, graph, organizationJsonLd, personJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export const revalidate = 300;
@@ -33,11 +35,13 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       title: settings.seoTitle,
       description: settings.seoDescription,
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }],
     },
     twitter: {
       card: "summary_large_image",
       title: settings.seoTitle,
       description: settings.seoDescription,
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }],
     },
   };
 }
@@ -73,6 +77,7 @@ export default async function HomePage() {
       </main>
       <Footer settings={settings} />
       <StickyWhatsApp whatsapp={settings.whatsapp} />
+      <BackToTop />
     </>
   );
 }

@@ -4,9 +4,8 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/site";
 
-export const alt = "ES Contabilidade, Elenice Sousa: contabilidade especializada em profissionais da saúde";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const OG_ALT = "ES Contabilidade, Elenice Sousa: contabilidade especializada em profissionais da saúde";
+export const OG_SIZE = { width: 1200, height: 630 };
 
 const fontsDir = join(process.cwd(), "src/app/fonts");
 const serif = readFile(join(fontsDir, "newsreader-regular.ttf"));
@@ -14,7 +13,8 @@ const sans = readFile(join(fontsDir, "manrope-medium.ttf"));
 const portrait = readFile(join(process.cwd(), "public/images/elenice/elenice-sentada.jpg"));
 const monogram = readFile(join(process.cwd(), "public/brand/es-mark.png"));
 
-export default async function OpenGraphImage() {
+/** Renders the social image as PNG; the route converts it to a light JPEG for WhatsApp and friends. */
+export async function renderOgImage() {
   const [serifData, sansData, portraitData, monogramData] = await Promise.all([serif, sans, portrait, monogram]);
   const portraitSrc = `data:image/jpeg;base64,${portraitData.toString("base64")}`;
   const monogramSrc = `data:image/png;base64,${monogramData.toString("base64")}`;
@@ -93,7 +93,7 @@ export default async function OpenGraphImage() {
       </div>
     ),
     {
-      ...size,
+      ...OG_SIZE,
       fonts: [
         { name: "Newsreader", data: serifData, weight: 400, style: "normal" },
         { name: "Manrope", data: sansData, weight: 500, style: "normal" },

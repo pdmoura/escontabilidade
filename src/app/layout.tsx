@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Newsreader } from "next/font/google";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { defaultSettings } from "@/lib/content/defaults";
+import { OG_ALT } from "@/lib/og/render";
 import { SITE_URL, site } from "@/lib/site";
 import "./globals.css";
 
@@ -48,11 +49,13 @@ export const metadata: Metadata = {
     url: "/",
     title: defaultSettings.seoTitle,
     description: defaultSettings.seoDescription,
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }],
   },
   twitter: {
     card: "summary_large_image",
     title: defaultSettings.seoTitle,
     description: defaultSettings.seoDescription,
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }],
   },
   robots: { index: true, follow: true },
   formatDetection: { telephone: false, email: false, address: false },

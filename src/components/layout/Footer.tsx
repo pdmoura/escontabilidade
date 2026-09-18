@@ -174,7 +174,21 @@ export function Footer({ settings }: { settings: ExtendedSettings }) {
         <p>
           {settings.brandName} · {site.owner}. Todos os direitos reservados, {year}.
         </p>
-        <p>{settings.serviceArea}</p>
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          <span>{settings.serviceArea}</span>
+          <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:inline-block" />
+          <span>
+            Feito por{" "}
+            <a
+              href="https://ctrnexus.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-coffee-800 underline decoration-gold-600 underline-offset-4 transition-colors hover:text-coffee-900"
+            >
+              CTR Nexus
+            </a>
+          </span>
+        </p>
       </div>
     </footer>
   );

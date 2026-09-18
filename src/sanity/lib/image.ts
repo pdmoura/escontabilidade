@@ -20,6 +20,12 @@ export function dimensionsFromRef(ref?: string): { width: number; height: number
   return { width: Number(match[1]), height: Number(match[2]) };
 }
 
+/** 1200x630 JPEG crop for social previews (kept small for WhatsApp). */
+export function toSocialImageUrl(image: SanityImageRef | null | undefined): string | undefined {
+  if (!image?.asset?._ref || !builder) return undefined;
+  return builder.image(image).width(1200).height(630).fit("crop").format("jpg").quality(78).url();
+}
+
 export function toImageSource(
   image: SanityImageRef | null | undefined,
   fallback: ImageSource,

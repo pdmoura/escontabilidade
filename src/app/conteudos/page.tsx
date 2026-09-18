@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { WhatsAppIcon, WhatsAppLink } from "@/components/ui/WhatsAppLink";
 import { getArticles, getSettings } from "@/lib/content/get";
+import { OG_ALT } from "@/lib/og/render";
 import { breadcrumbJsonLd, graph } from "@/lib/seo";
 import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/conteudos" },
-  openGraph: { title, description, url: "/conteudos", type: "website" },
+  openGraph: { title, description, url: "/conteudos", type: "website", images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }], },
+  twitter: { card: "summary_large_image", title, description, images: [{ url: "/og-image.jpg", width: 1200, height: 630, type: "image/jpeg", alt: OG_ALT }], },
 };
 
 const crumbs = [

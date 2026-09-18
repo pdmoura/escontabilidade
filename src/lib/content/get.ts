@@ -2,7 +2,7 @@ import { cache } from "react";
 import type { PortableTextBlock } from "@portabletext/react";
 import { readingTimeFromChars } from "@/lib/reading-time";
 import { safeFetch } from "@/sanity/lib/client";
-import { toImageSource } from "@/sanity/lib/image";
+import { toImageSource, toSocialImageUrl } from "@/sanity/lib/image";
 import {
   ARTICLE_BY_SLUG_QUERY,
   ARTICLE_SLUGS_QUERY,
@@ -200,6 +200,7 @@ export const getArticleBySlug = cache(async (slug: string): Promise<Article | nu
     generatedByAI: Boolean(raw.generatedByAI),
     reviewedByHuman: Boolean(raw.reviewedByHuman),
     origin: raw.origin === "ai" ? "ai" : "manual",
+    ogImage: toSocialImageUrl(raw.coverImage),
   };
 });
 
