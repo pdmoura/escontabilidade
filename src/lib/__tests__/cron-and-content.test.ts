@@ -56,3 +56,16 @@ describe("cron endpoint", () => {
     expect(body.status).toBe("skipped");
   });
 });
+
+describe("story line progress", async () => {
+  const { lineProgress } = await import("@/components/sections/Story");
+  it("shows exactly one line at a time and never re-shows an earlier line", () => {
+    for (const p of [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1]) {
+      const visible = [0, 1, 2, 3, 4].filter((i) => lineProgress(p, i, 5).opacity > 0.5);
+      expect(visible.length).toBe(1);
+    }
+    expect(lineProgress(0, 0, 5).opacity).toBe(1);
+    expect(lineProgress(0.5, 0, 5).opacity).toBe(0);
+    expect(lineProgress(1, 4, 5).opacity).toBe(1);
+  });
+});
