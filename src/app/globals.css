@@ -352,11 +352,6 @@
   .text-balance {
     text-wrap: balance;
   }
-  /* Below-the-fold sections skip style/layout until they approach the viewport. */
-  .{
-    content-visibility: auto;
-    contain-intrinsic-size: auto 900px;
-  }
   .tabular {
     font-variant-numeric: tabular-nums;
   }

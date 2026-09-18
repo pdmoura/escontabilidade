@@ -58,6 +58,29 @@ export function Story() {
   );
 }
 
+/** Piecewise progress curve for one line: 0 before/after its slot, 1 while it holds. */
+export function lineProgress(p: number, index: number, total: number): { opacity: number; y: number } {
+  const slot = 1 / total;
+  const start = index * slot;
+  const end = start + slot;
+  const fadeIn = 0.22 * slot;
+  const fadeOut = 0.18 * slot;
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+
+  if (p < start) return { opacity: 0, y: 36 };
+  if (p < start + fadeIn && !isFirst) {
+    const t = (p - start) / fadeIn;
+    return { opacity: t, y: 36 * (1 - t) };
+  }
+  if (isLast || p <= end - fadeOut) return { opacity: 1, y: 0 };
+  if (p < end) {
+    const t = (p - (end - fadeOut)) / fadeOut;
+    return { opacity: 1 - t, y: -28 * t };
+  }
+  return { opacity: 0, y: -28 };
+}
+
 function StoryLine({
   lead,
   focus,
@@ -72,30 +95,13 @@ function StoryLine({
   progress: MotionValue<number>;
 }) {
   const isLast = index === total - 1;
-  const slot = 1 / total;
-  const start = index * slot;
-  const end = start + slot;
-  const fadeIn = 0.22 * slot;
-  const fadeOut = 0.18 * slot;
-
-  const isFirst = index === 0;
-  const inputRange = isLast ? [start, start + fadeIn, 1] : [start, start + fadeIn, end - fadeOut, end];
-  const opacity = useTransform(
-    progress,
-    inputRange,
-    isLast ? [0, 1, 1] : isFirst ? [1, 1, 1, 0] : [0, 1, 1, 0],
-  );
-  const y = useTransform(
-    progress,
-    inputRange,
-    isLast ? [36, 0, 0] : isFirst ? [0, 0, 0, -28] : [36, 0, 0, -28],
-  );
+  const opacity = useTransform(progress, (p) => lineProgress(p, index, total).opacity);
+  const y = useTransform(progress, (p) => lineProgress(p, index, total).y);
 
   return (
     <m.div
       style={{ opacity, y }}
       className="absolute inset-x-0 top-1/2 -translate-y-1/2"
-      aria-hidden={false}
     >
       <p className="font-serif text-2xl leading-tight text-cream-50/55 sm:text-3xl md:text-[2.4rem]">{lead}</p>
       <p
@@ -105,13 +111,7 @@ function StoryLine({
             : "text-[2.4rem] sm:text-5xl md:text-[4.8rem]"
         }`}
       >
-        {isLast ? (
-          <>
-            <span className="text-gold-400">{focus}</span>
-          </>
-        ) : (
-          focus
-        )}
+        {isLast ? <span className="text-gold-400">{focus}</span> : focus}
       </p>
     </m.div>
   );
