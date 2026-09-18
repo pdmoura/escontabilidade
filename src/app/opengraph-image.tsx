@@ -12,7 +12,7 @@ const fontsDir = join(process.cwd(), "src/app/fonts");
 const serif = readFile(join(fontsDir, "newsreader-regular.ttf"));
 const sans = readFile(join(fontsDir, "manrope-medium.ttf"));
 const portrait = readFile(join(process.cwd(), "public/images/elenice/elenice-sentada.jpg"));
-const monogram = readFile(join(process.cwd(), "public/brand/es-monogram.png"));
+const monogram = readFile(join(process.cwd(), "public/brand/es-mark.png"));
 
 export default async function OpenGraphImage() {
   const [serifData, sansData, portraitData, monogramData] = await Promise.all([serif, sans, portrait, monogram]);
@@ -42,7 +42,7 @@ export default async function OpenGraphImage() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            <img src={monogramSrc} width={72} height={64} alt="" />
+            <img src={monogramSrc} width={72} height={65} alt="" />
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span style={{ fontFamily: "Newsreader", fontSize: 30, lineHeight: 1 }}>Elenice Sousa</span>
               <span style={{ fontSize: 14, letterSpacing: 4, color: "#a07a2c", marginTop: 8 }}>

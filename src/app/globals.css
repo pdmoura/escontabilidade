@@ -76,6 +76,26 @@
     overflow-x: clip;
   }
 
+  html {
+    scrollbar-color: var(--color-gold-600) var(--color-cream-200);
+    scrollbar-width: thin;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-cream-200);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-gold-500), var(--color-gold-700));
+    border: 2px solid var(--color-cream-200);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-coffee-800);
+  }
+
   ::selection {
     background: var(--color-gold-400);
     color: var(--color-coffee-900);
@@ -225,6 +245,87 @@
   .rule {
     height: 1px;
     background: var(--color-line);
+  }
+
+  /* Primary navigation: underline draws in from the left; active keeps a gold hairline. */
+  .nav-link {
+    position: relative;
+    padding-block: 0.35rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgb(64 40 32 / 0.82);
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: var(--color-gold-600);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .nav-link:hover {
+    color: var(--color-coffee-900);
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav-link.is-active {
+    color: var(--color-coffee-900);
+  }
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+    background: var(--color-gold-500);
+  }
+
+  /* Soft light sweep on hover for the primary button. */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgb(249 245 235 / 0.22) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.9s var(--ease-out-expo);
+  }
+  .btn-shine:hover::before {
+    transform: translateX(120%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link::after,
+    .btn-shine::before {
+      transition: none;
+    }
+  }
+
+  /* Footer social icons */
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-coffee-800);
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      border-color 0.35s ease,
+      transform 0.5s var(--ease-soft);
+  }
+  .icon-link:hover {
+    background: var(--color-coffee-800);
+    border-color: var(--color-coffee-800);
+    color: var(--color-cream-50);
+    transform: translateY(-2px);
   }
 
   .paper-grain {

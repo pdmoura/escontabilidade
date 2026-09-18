@@ -2,15 +2,62 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { WhatsAppIcon, WhatsAppLink } from "@/components/ui/WhatsAppLink";
 import { nav } from "@/lib/site";
 import { WHATSAPP_MESSAGES } from "@/lib/whatsapp";
 
+const SECTION_IDS = ["sobre", "servicos", "faq"];
+
+function useActiveNav(pathname: string) {
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
+    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (el): el is HTMLElement => Boolean(el),
+    );
+    if (!sections.length) return;
+
+    const visible = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.set(entry.target.id, entry.intersectionRatio);
+          else visible.delete(entry.target.id);
+        }
+        let best: string | null = null;
+        let bestRatio = 0;
+        for (const [id, ratio] of visible) {
+          if (ratio > bestRatio) {
+            best = id;
+            bestRatio = ratio;
+          }
+        }
+        setActiveSection(best);
+      },
+      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.1, 0.25, 0.5] },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  return (href: string) => {
+    if (href.startsWith("/#")) return pathname === "/" && activeSection === href.slice(2);
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+}
+
 export function Header({ whatsapp }: { whatsapp: string }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuId = useId();
+  const pathname = usePathname();
+  const isActive = useActiveNav(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,18 +93,14 @@ export function Header({ whatsapp }: { whatsapp: string }) {
           Pular para o conteúdo
         </a>
         <div className="container-x flex h-[var(--header-height)] items-center justify-between gap-6">
-          <Link
-            href="/"
-            className="group flex items-center gap-3"
-            aria-label="ES Contabilidade, página inicial"
-          >
+          <Link href="/" className="group flex items-center gap-3" aria-label="ES Contabilidade, página inicial">
             <Image
-              src="/brand/es-monogram.png"
+              src="/brand/es-mark.png"
               alt=""
-              width={179}
-              height={160}
+              width={800}
+              height={717}
               priority
-              className="h-9 w-auto"
+              className="h-10 w-auto transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
             />
             <span className="hidden flex-col leading-none sm:flex">
               <span className="text-coffee-900 font-serif text-[1.05rem] tracking-tight">Elenice Sousa</span>
@@ -67,21 +110,25 @@ export function Header({ whatsapp }: { whatsapp: string }) {
             </span>
           </Link>
 
-          <nav aria-label="Principal" className="hidden items-center gap-8 md:flex">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-coffee-800/85 hover:text-coffee-900 text-[0.92rem] font-medium transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav aria-label="Principal" className="hidden items-center gap-7 md:flex">
+            {nav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`nav-link ${active ? "is-active" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <WhatsAppLink
               message={WHATSAPP_MESSAGES.sticky}
               location="header"
               number={whatsapp}
-              className="btn btn-primary min-h-11 px-5 py-2.5 text-[0.88rem]"
+              className="btn btn-primary btn-shine ml-1 min-h-11 px-5 py-2.5 text-[0.88rem]"
             >
               <WhatsAppIcon className="size-4" />
               WhatsApp
@@ -119,18 +166,25 @@ export function Header({ whatsapp }: { whatsapp: string }) {
         aria-hidden={!open}
       >
         <nav aria-label="Menu" className="divide-line flex flex-col divide-y">
-          {nav.map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              tabIndex={open ? 0 : -1}
-              className="text-coffee-900 py-5 font-serif text-[2rem] leading-none"
-              style={{ transitionDelay: open ? `${80 + i * 50}ms` : "0ms" }}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item, i) => {
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                tabIndex={open ? 0 : -1}
+                aria-current={active ? "page" : undefined}
+                className={`flex items-center justify-between py-5 font-serif text-[2rem] leading-none transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  active ? "text-coffee-900" : "text-coffee-800/80"
+                } ${open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
+                style={{ transitionDelay: open ? `${80 + i * 50}ms` : "0ms" }}
+              >
+                {item.label}
+                {active ? <span aria-hidden="true" className="bg-gold-600 size-2 rounded-full" /> : null}
+              </Link>
+            );
+          })}
         </nav>
         <div className="mt-auto flex flex-col gap-4">
           <p className="text-muted text-sm">Atendimento direto e personalizado.</p>
